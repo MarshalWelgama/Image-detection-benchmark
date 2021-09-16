@@ -1,0 +1,4 @@
+opencv_python==4.5.3.56
+cvlib==0.2.6
+numpy==1.19.5
+paho_mqtt==1.5.1
