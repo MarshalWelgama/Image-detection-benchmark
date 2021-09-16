@@ -5,6 +5,14 @@ import urllib.request
 import numpy as np
 import time
 import _thread
+import paho.mqtt.client as mqtt #import the client1
+broker_address="104.210.87.145" 
+client = mqtt.Client("P1") #create new instance
+print("connecting to broker")
+client.connect(broker_address) #connect to broker
+print("connected")
+client.subscribe("data")
+
 
 num_threads = 0
 def detect_face(threadName):
@@ -26,6 +34,7 @@ def detect_face(threadName):
         end = time.process_time()  
         elapsed = end - start
         print(threadName, elapsed, "done")
+        client.publish("data","{}".format(elapsed))
         cv2.destroyAllWindows()
         num_threads -= 1
     except:
