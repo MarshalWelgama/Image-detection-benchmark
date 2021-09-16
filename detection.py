@@ -14,11 +14,10 @@ print("connected")
 client.subscribe("data")
 
 
-num_threads = 0
 def detect_face(threadName):
     global num_threads
     try:
-        num_threads += 1
+ 
         start = time.process_time()
         req = urllib.request.urlopen('https://100k-faces.glitch.me/random-image')
         
@@ -33,24 +32,13 @@ def detect_face(threadName):
         cv2.imwrite("{}.jpg".format(threadName), image)
         end = time.process_time()  
         elapsed = end - start
-        print(threadName, elapsed, "done")
+        print(elapsed, "done")
         client.publish("data","{}".format(elapsed))
         cv2.destroyAllWindows()
-        num_threads -= 1
+  
     except:
         print('ERROR OCCURED: life goes on..')
-        num_threads -= 1
-def rec_thread():
-    try:
-        _thread.start_new_thread( detect_face, ("Thread-1",) )
-        _thread.start_new_thread( detect_face, ("Thread-2",) )
-        _thread.start_new_thread( detect_face, ("Thread-3",) )
-        _thread.start_new_thread( detect_face, ("Thread-4",) )
-        print('done')
-    except:
-        print('ok')
-  
-    while num_threads > 0: 
-        pass
+ 
+
 while 1:
-    rec_thread()
+    detect_face("single")
